@@ -1,10 +1,12 @@
-import React from "react";
-import Slider from "./_components/Slider";
+import React from 'react';
+import Slider from './_components/Slider';
+import BeautyPackages from '../beauty-packages/_components/BeautyPackages';
 
 const HomePage = () => {
   return (
     <main>
-     <Slider/>
+      <Slider />
+      <BeautyPackages />
     </main>
   );
 };
