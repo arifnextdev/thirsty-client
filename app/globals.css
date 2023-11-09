@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Common Style  */
+.sp {
+  @apply py-40;
+}
+
 /* TypoGraphy  */
 
 h1 {
@@ -21,3 +26,20 @@ p {
 small {
   @apply text-xs font-semibold  tracking-widest;
 }
+
+/* swiper style  */
+.swiper-button-next,
+.swiper-button-prev {
+  color: rgb(0, 145, 181) !important;
+  fill: rgb(0, 145, 181) !important;
+  stroke: rgb(0, 145, 181) !important;
+}
+
+.swiper-pagination-bullet {
+  background-color: rgb(0, 145, 181) !important;
+}
+
+.swiper-pagination-bullet-active {
+  background-color: rgb(0, 145, 181) !important;
+}
+/* swiper style  */
