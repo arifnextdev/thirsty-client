@@ -2,9 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Base style  */
+main {
+  @apply mt-20;
+}
+
 /* Common Style  */
 .sp {
   @apply py-40;
+}
+
+.eq {
+  transition: 500ms cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 /* TypoGraphy  */
@@ -43,3 +52,17 @@ small {
   background-color: rgb(0, 145, 181) !important;
 }
 /* swiper style  */
+
+/* Link Style  */
+
+.link-item {
+  @apply relative;
+}
+
+.link-item::after {
+  @apply eq absolute bottom-0 left-1/2 h-px w-0 -translate-x-1/2 bg-black content-[""];
+}
+
+.link-item::after:hover {
+  @apply w-full;
+}
