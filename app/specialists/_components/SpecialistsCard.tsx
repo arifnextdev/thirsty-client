@@ -33,7 +33,7 @@ const SpecialistsCard: React.FC<SpecialistsCardProps> = ({ specialist }) => {
         <p className='text-black/70'>{specialist.bio.substring(0, 50)}</p>
         <div className='flex items-center justify-between gap-2.5'>
           <Link
-            href={`/beauty-packages/${specialist._id}`}
+            href={`/specialists/${specialist._id}`}
             className={cn(
               buttonVariants({
                 variant: 'secondary',
