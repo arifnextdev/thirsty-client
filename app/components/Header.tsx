@@ -15,8 +15,8 @@ const navcontents = [
     lebel: 'Beauty Packages',
   },
   {
-    href: '/specialist',
-    lebel: 'Specialist',
+    href: '/specialists',
+    lebel: 'Specialists',
   },
   {
     href: '/about',

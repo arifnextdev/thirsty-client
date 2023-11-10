@@ -1,6 +1,6 @@
 import { bookingType } from './booking';
 import { commonType } from './commonType';
-import { speciallisType } from './specialist';
+import { speciallisType } from './specialists';
 
 export type beautyPackageType = {
   title: string;
