@@ -1,10 +1,34 @@
 'use client';
 import Button, { buttonVariants } from '@/app/components/ui/Button';
+import { axiosPost } from '@/app/libs/axiosPost';
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
+import toast from 'react-hot-toast';
 
 const SignInForm = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const handleSubmit = useCallback(
+    async (e: React.SyntheticEvent) => {
+      e.preventDefault();
+
+      const data = await axiosPost(`/api/auth/login`, formData);
+
+      if (data) {
+        setIsLoading(false);
+        setFormData({
+          email: '',
+          password: '',
+        });
+        toast.success('Login successfull');
+      } else {
+        setIsLoading(false);
+      }
+      console.log(formData);
+    },
+    [formData]
+  );
   return (
     <div className='flex flex-col gap-10 '>
       <div className='flex flex-col gap-1.5'>
@@ -12,16 +36,24 @@ const SignInForm = () => {
         <p className='text-black/50'>Please login to your account</p>
       </div>
 
-      <form className='flex w-full flex-col gap-5 text-lg'>
+      <form
+        onSubmit={handleSubmit}
+        className='flex w-full flex-col gap-5 text-lg'
+      >
         <div className='flex flex-col items-start gap-1.5 '>
           <label htmlFor='email' className='cursor-pointer'>
             Email Address
           </label>
           <input
+            value={formData.email}
+            onChange={(e) =>
+              setFormData({ ...formData, email: e.target.value })
+            }
             type='email'
             id='email'
+            name='email'
             placeholder='hello@example.com'
-            className='w-full rounded-2xl border border-gray bg-transparent p-5 outline-none focus:border-blue '
+            className='w-full rounded-xl border border-gray bg-transparent px-5 py-3 outline-none focus:border-blue '
           />
         </div>
         <div className='flex flex-col items-start gap-1.5 '>
@@ -29,16 +61,28 @@ const SignInForm = () => {
             Password
           </label>
           <input
+            value={formData.password}
+            onChange={(e) =>
+              setFormData({ ...formData, password: e.target.value })
+            }
             type='password'
+            name='password'
             id='password'
             placeholder='write your password'
-            className='w-full rounded-2xl border border-gray bg-transparent p-5 outline-none focus:border-blue '
+            className='w-full rounded-xl border border-gray bg-transparent px-5 py-3 outline-none focus:border-blue '
           />
         </div>
 
-        <Button variant={'secondary'} type='submit'>
-          Login
-        </Button>
+        <div className=''>
+          <Button
+            variant={'secondary'}
+            type='submit'
+            isLoading={isLoading}
+            size={'full'}
+          >
+            Login
+          </Button>
+        </div>
 
         <p className='text-center'>
           <span className='text-black/50'>Do not have an account?</span>{' '}
