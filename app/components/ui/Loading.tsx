@@ -1,12 +1,12 @@
 import { MoonLoader } from 'react-spinners';
 
-interface isLoadingProps {
+interface LoadingProps {
   isLoading: boolean;
 }
 
-const Loading: React.FC<isLoadingProps> = ({ isLoading }) => {
+const Loading: React.FC<LoadingProps> = ({ isLoading }) => {
   return (
-    <div className='flex justify-center '>
+    <div className='flex justify-center'>
       <MoonLoader
         color='rgb(0, 145, 181)'
         loading={isLoading}

@@ -1,28 +1,34 @@
 'use client';
-import Button, { buttonVariants } from '@/app/components/ui/Button';
+import Button from '@/app/components/ui/Button';
 import { axiosPost } from '@/app/libs/axiosPost';
 import Link from 'next/link';
 import React, { useCallback, useState } from 'react';
-import toast from 'react-hot-toast';
+import toast from 'react-hot-toast/headless';
 
-const SignInForm = () => {
-  const [formData, setFormData] = useState({ email: '', password: '' });
+const SignUpForm = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    photoURl: '',
+  });
 
   const handleSubmit = useCallback(
     async (e: React.SyntheticEvent) => {
       e.preventDefault();
       setIsLoading(true);
-
-      const data = await axiosPost(`/api/auth/login`, formData);
-
+      const data = await axiosPost('/api/auth/register', formData);
       if (data) {
         setIsLoading(false);
         setFormData({
+          name: '',
           email: '',
           password: '',
+          photoURl: '',
         });
-        toast.success('Login successfull');
+
+        toast.success('Register Success');
       } else {
         setIsLoading(false);
       }
@@ -30,17 +36,32 @@ const SignInForm = () => {
     },
     [formData]
   );
+
   return (
     <div className='flex flex-col gap-10 '>
       <div className='flex flex-col gap-1.5'>
         <h2>Welcome Back!</h2>
-        <p className='text-black/50'>Please login to your account</p>
+        <p className='text-black/50'>Please Register to your account</p>
       </div>
 
       <form
         onSubmit={handleSubmit}
         className='flex w-full flex-col gap-5 text-lg'
       >
+        <div className='flex flex-col items-start gap-1.5 '>
+          <label htmlFor='name' className='cursor-pointer'>
+            Email Address
+          </label>
+          <input
+            value={formData.name}
+            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            type='text'
+            id='name'
+            name='name'
+            placeholder='Arif.....'
+            className='w-full rounded-xl border border-gray bg-transparent px-5 py-3 outline-none focus:border-blue '
+          />
+        </div>
         <div className='flex flex-col items-start gap-1.5 '>
           <label htmlFor='email' className='cursor-pointer'>
             Email Address
@@ -50,13 +71,14 @@ const SignInForm = () => {
             onChange={(e) =>
               setFormData({ ...formData, email: e.target.value })
             }
-            type='email'
-            id='email'
-            name='email'
-            placeholder='hello@example.com'
+            type='text'
+            id='name'
+            name='name'
+            placeholder='example@gmail.com'
             className='w-full rounded-xl border border-gray bg-transparent px-5 py-3 outline-none focus:border-blue '
           />
         </div>
+
         <div className='flex flex-col items-start gap-1.5 '>
           <label htmlFor='password' className='cursor-pointer'>
             Password
@@ -74,14 +96,31 @@ const SignInForm = () => {
           />
         </div>
 
+        <div className='flex flex-col items-start gap-1.5 '>
+          <label htmlFor='photourl' className='cursor-pointer'>
+            Photo Url
+          </label>
+          <input
+            value={formData.photoURl}
+            onChange={(e) =>
+              setFormData({ ...formData, photoURl: e.target.value })
+            }
+            type='text'
+            id='photourl'
+            name='photourl'
+            placeholder='Arif.....'
+            className='w-full rounded-xl border border-gray bg-transparent px-5 py-3 outline-none focus:border-blue '
+          />
+        </div>
+
         <Button variant='secondary' type='submit' isLoading={isLoading}>
-          Login
+          Register
         </Button>
 
         <p className='text-center'>
-          <span className='text-black/50'>Do not have an account?</span>{' '}
-          <Link href={'/sign-up'} className='link-item text-blue'>
-            Register
+          <span className='text-black/50'>Do you have an account?</span>{' '}
+          <Link href={'/sign-in'} className='link-item text-blue'>
+            Login
           </Link>
         </p>
       </form>
@@ -89,4 +128,4 @@ const SignInForm = () => {
   );
 };
 
-export default SignInForm;
+export default SignUpForm;
