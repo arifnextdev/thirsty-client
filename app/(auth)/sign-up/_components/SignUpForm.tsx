@@ -1,40 +1,61 @@
 'use client';
 import Button from '@/app/components/ui/Button';
 import { axiosPost } from '@/app/libs/axiosPost';
+import { photoUrlChecker } from '@/helper/photoUrlCheker';
+import { login } from '@/redux/features/auth/authSlice';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import React, { useCallback, useState } from 'react';
-import toast from 'react-hot-toast/headless';
+import toast from 'react-hot-toast';
+import { useDispatch } from 'react-redux';
+
+interface SignUpFormData {
+  name: string;
+  email: string;
+  password: string;
+  photoURl: string;
+}
 
 const SignUpForm = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<SignUpFormData>({
     name: '',
     email: '',
     password: '',
     photoURl: '',
   });
+  const router = useRouter();
+  const dispatch = useDispatch();
 
   const handleSubmit = useCallback(
     async (e: React.SyntheticEvent) => {
       e.preventDefault();
       setIsLoading(true);
-      const data = await axiosPost('/api/auth/register', formData);
-      if (data) {
-        setIsLoading(false);
-        setFormData({
-          name: '',
-          email: '',
-          password: '',
-          photoURl: '',
-        });
 
-        toast.success('Register Success');
+      const hasPermitted = photoUrlChecker(formData.photoURl);
+
+      if (hasPermitted) {
+        const data = await axiosPost('/api/auth/register', formData);
+        if (data) {
+          setIsLoading(false);
+          setFormData({
+            name: '',
+            email: '',
+            password: '',
+            photoURl: '',
+          });
+          dispatch(login(data));
+          router.push('/');
+          toast.success('Register Success');
+        } else {
+          setIsLoading(false);
+        }
       } else {
         setIsLoading(false);
+        toast.error('Please paste a photo url from pexels/unsplash/cloudinary');
       }
-      console.log(formData);
     },
-    [formData]
+    [formData, router, dispatch]
   );
 
   return (
@@ -108,7 +129,7 @@ const SignUpForm = () => {
             type='text'
             id='photourl'
             name='photourl'
-            placeholder='Arif.....'
+            placeholder='Past your photo url from pxels/unplash/cloudinary'
             className='w-full rounded-xl border border-gray bg-transparent px-5 py-3 outline-none focus:border-blue '
           />
         </div>
