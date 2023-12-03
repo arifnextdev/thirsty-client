@@ -41,6 +41,33 @@ const Header = () => {
   const session = useSelector((state: RootState) => state.auth.userAndToken);
   const dispatch = useDispatch();
 
+  const adminNavLinks = [
+    {
+      href: '/profile',
+      lebel: 'Profile',
+    },
+    {
+      href: '/user/manage/bookings',
+      lebel: 'My Bookings',
+    },
+    {
+      href: '/admin/manage/beauty-packages',
+      lebel: 'Manage Packages',
+    },
+    {
+      href: '/admin/manage/specialists',
+      lebel: 'Manage Specilists',
+    },
+    {
+      href: '/admin/manage/bookings',
+      lebel: 'Manage Bookings',
+    },
+    {
+      href: '/admin/manage/users',
+      lebel: 'Manage Users',
+    },
+  ];
+
   return (
     <>
       <header className='fixed left-0 right-0  top-0 z-[101] flex h-20 w-full items-center border-b border-gray bg-white/90 backdrop-blur-xl'>
@@ -70,9 +97,9 @@ const Header = () => {
                 Sign In
               </Link>
             ) : (
-              <div className='flex items-center gap-5  '>
+              <div className='z-[102] flex items-center gap-5 '>
                 <div
-                  className='group relative h-12 w-12 cursor-pointer  rounded-full'
+                  className=' relative h-12 w-12 cursor-pointer  rounded-full'
                   onClick={() =>
                     setShouldProfilePopupOpen(!shouldProfilePopupOpen)
                   }
@@ -82,12 +109,43 @@ const Header = () => {
                     alt={session.user.name}
                     width={64}
                     height={64}
-                    className='eq h-full w-full overflow-hidden rounded-full object-cover group-hover:brightness-50'
+                    className='eq h-full w-full overflow-hidden rounded-full object-cover hover:brightness-50'
                   />
                   {shouldProfilePopupOpen && (
-                    <div className='absolute right-0 top-[calc(100%+1rem)] z-[102] flex flex-col items-start gap-5 rounded-xl bg-white px-10 py-5 shadow-md'>
-                      gggg
-                    </div>
+                    <ul className='absolute right-0 top-[calc(100%+1rem)]  flex  flex-col items-start gap-5 rounded-xl bg-white px-10 py-5 shadow-md'>
+                      {session?.user?.role === 'admin' &&
+                        adminNavLinks?.map((item) => (
+                          <li key={item.lebel}>
+                            <Link
+                              href={item.href}
+                              className={cn(
+                                'link-item whitespace-nowrap',
+                                pathname === item.href
+                                  ? 'text-black'
+                                  : 'text-black/50'
+                              )}
+                            >
+                              {item.lebel}
+                            </Link>
+                          </li>
+                        ))}
+                      {session?.user?.role === 'user' &&
+                        adminNavLinks?.slice(0, 2).map((item) => (
+                          <li key={item.lebel}>
+                            <Link
+                              href={item.href}
+                              className={cn(
+                                'link-item whitespace-nowrap',
+                                pathname === item.href
+                                  ? 'text-black'
+                                  : 'text-black/50'
+                              )}
+                            >
+                              {item.lebel}
+                            </Link>
+                          </li>
+                        ))}
+                    </ul>
                   )}
                 </div>
                 <Button
@@ -107,7 +165,7 @@ const Header = () => {
       {/* pop up Overlay  */}
       {shouldProfilePopupOpen && (
         <div
-          className='fixed bottom-0 left-0 right-0 top-0 z-[101] h-full w-full bg-transparent '
+          className='fixed bottom-0 left-0 right-0 top-0 z-[100] h-full w-full bg-transparent '
           onClick={() => setShouldProfilePopupOpen(false)}
         ></div>
       )}

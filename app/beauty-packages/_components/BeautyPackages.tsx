@@ -9,6 +9,8 @@ import { beautyPackageType } from '@/types/beautyPackageItem';
 import Link from 'next/link';
 import { cn } from '@/app/libs/utils';
 import { buttonVariants } from '@/app/components/ui/Button';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
 
 interface beautyPackagesProps {
   native?: boolean;

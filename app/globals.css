@@ -66,3 +66,7 @@ small {
 .link-item::after:hover {
   @apply w-full;
 }
+
+/* .userTableBody tr {
+  @apply my-10 bg-blue;
+} */
