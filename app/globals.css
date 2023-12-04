@@ -67,6 +67,14 @@ small {
   @apply w-full;
 }
 
-/* .userTableBody tr {
-  @apply my-10 bg-blue;
-} */
+.thead td {
+  @apply bg-blue px-5 py-5 text-xl text-white;
+}
+
+.userTableBody td {
+  @apply px-3 py-1 text-lg tracking-wide text-white;
+}
+
+.userTableBody tr {
+  @apply border-b border-t border-white/30;
+}

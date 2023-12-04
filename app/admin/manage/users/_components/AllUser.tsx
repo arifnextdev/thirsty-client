@@ -7,14 +7,16 @@ import User from './User';
 import { userType } from '@/types/user';
 
 const AllUser = () => {
-  const token = useSelector(
-    (state: RootState) => state.auth.userAndToken?.token
-  );
-  const { data: users, isLoading, error } = useFetch('/api/users', token);
-  console.log(users);
+  const session = useSelector((state: RootState) => state.auth?.userAndToken);
+  const {
+    data: users,
+    isLoading,
+    error,
+  } = useFetch('/api/users', session?.token);
+  const currentUser = session?.user._id;
   return (
     <section>
-      <User users={users} />
+      <User users={users} currentUser={currentUser} />
     </section>
   );
 };
