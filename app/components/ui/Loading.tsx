@@ -1,4 +1,4 @@
-import { MoonLoader } from 'react-spinners';
+import { PacmanLoader } from 'react-spinners';
 
 interface LoadingProps {
   isLoading: boolean;
@@ -7,7 +7,7 @@ interface LoadingProps {
 const Loading: React.FC<LoadingProps> = ({ isLoading }) => {
   return (
     <div className='flex justify-center'>
-      <MoonLoader
+      <PacmanLoader
         color='rgb(0, 145, 181)'
         loading={isLoading}
         size={24}
