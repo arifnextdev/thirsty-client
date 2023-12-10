@@ -2,17 +2,25 @@
 import Button, { buttonVariants } from '@/app/components/ui/Button';
 import { axiosPost } from '@/app/libs/axiosPost';
 import { login } from '@/redux/features/auth/authSlice';
+import { RootState } from '@/redux/store';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import React, { useCallback, useState } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
+import React, { useCallback, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-const SignInForm = () => {
+interface SignInFormProps {
+  query: string;
+}
+
+const SignInForm: React.FC<SignInFormProps> = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
+  const pathName = usePathname();
   const dispatch = useDispatch();
+
+  console.log(router);
 
   const handleSubmit = useCallback(
     async (e: React.SyntheticEvent) => {
@@ -37,6 +45,7 @@ const SignInForm = () => {
     },
     [formData, router, dispatch]
   );
+
   return (
     <div className='flex flex-col gap-10 '>
       <div className='flex flex-col gap-1.5'>
