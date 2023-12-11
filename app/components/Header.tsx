@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { cn } from '../libs/utils';
 import Button, { buttonVariants } from './ui/Button';
 import { useDispatch, useSelector } from 'react-redux';
@@ -40,6 +40,7 @@ const Header = () => {
   const pathname = usePathname();
   const session = useSelector((state: RootState) => state.auth.userAndToken);
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const adminNavLinks = [
     {
@@ -152,6 +153,7 @@ const Header = () => {
                   variant={'danger'}
                   onClick={() => {
                     dispatch(logOut());
+                    router.push('/sign-in');
                     toast.success('Logout Success');
                   }}
                 >

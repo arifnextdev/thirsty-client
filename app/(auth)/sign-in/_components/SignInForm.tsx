@@ -9,11 +9,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 
-interface SignInFormProps {
-  query: string;
-}
-
-const SignInForm: React.FC<SignInFormProps> = () => {
+const SignInForm = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();

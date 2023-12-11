@@ -11,9 +11,16 @@ const AllUser = () => {
   const token = session?.token;
   const { data: users, isLoading, error } = useFetch('/api/users', token);
   const currentUser = session?.user._id;
+  console.log(isLoading);
+
   return (
     <section>
-      <User users={users} currentUser={currentUser} token={token} />
+      <User
+        users={users}
+        currentUser={currentUser}
+        token={token}
+        isLoading={isLoading}
+      />
     </section>
   );
 };
