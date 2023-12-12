@@ -10,17 +10,22 @@ const AllUser = () => {
   const session = useSelector((state: RootState) => state.auth?.userAndToken);
   const token = session?.token;
   const { data: users, isLoading, error } = useFetch('/api/users', token);
-  const currentUser = session?.user._id;
-  console.log(isLoading);
+  const currentId = session?.user._id;
 
   return (
-    <section>
-      <User
-        users={users}
-        currentUser={currentUser}
-        token={token}
-        isLoading={isLoading}
-      />
+    <section className='sp container'>
+      <div className='flex flex-col gap-3'>
+        {users &&
+          users.map((user: userType) => (
+            <User
+              key={user._id}
+              user={user}
+              currentId={currentId}
+              token={token}
+              isLoading={isLoading}
+            />
+          ))}
+      </div>
     </section>
   );
 };

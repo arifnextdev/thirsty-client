@@ -7,118 +7,99 @@ import React, { useState } from 'react';
 import { cn } from '@/app/libs/utils';
 import useFetch from '@/hooks/useFetch';
 import axios from 'axios';
-import Modal from './Modal';
-import { Loader2 } from 'lucide-react';
+import Modal from '@/app/components/ui/Modal';
 import Loading from '@/app/components/ui/Loading';
 interface UserProps {
-  users: userType[];
-  currentUser: string | undefined;
+  user: userType;
+  currentId: string | undefined;
   token: string | undefined;
   isLoading: boolean;
 }
 
-const User: React.FC<UserProps> = ({
-  users,
-  currentUser,
-  token,
-  isLoading,
-}) => {
+const User: React.FC<UserProps> = ({ user, currentId, token, isLoading }) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isOverlayOpen, setIsOverlayOpen] = useState<boolean>(false);
+  const currentUser = currentId === user._id;
+
+  const handleModal = () => {
+    setIsModalOpen(true);
+    setIsOverlayOpen(true);
+  };
+
+  const handleOverlay = () => {
+    setIsModalOpen(false);
+    setIsOverlayOpen(false);
+  };
   return (
     <>
-      (
-      <div className='sp container  relative'>
-        {isLoading && <Loading isLoading={isLoading} />}
-        <div className='rounded-xl bg-blue p-5 pt-0 shadow-xl'>
-          <table className='w-full  '>
-            <thead className='w-full'>
-              <tr className='thead'>
-                <td>Photo</td>
-                <td>Name</td>
-                <td>Email</td>
-                <td>Role</td>
-                <td>Action</td>
-              </tr>
-            </thead>
-
-            <tbody className='userTableBody '>
-              {users?.map((user: userType) => (
-                <>
-                  <tr
-                    key={user._id}
-                    className={cn(
-                      currentUser === user._id
-                        ? 'border border-purple bg-white/10 text-white'
-                        : 'bg-transparent'
-                    )}
-                  >
-                    <td>
-                      <div
-                        className={cn(
-                          'h-16 w-16 overflow-hidden rounded-full border-2',
-                          currentUser === user._id
-                            ? ' border-red'
-                            : ' border-white'
-                        )}
-                      >
-                        <Image
-                          src={user?.photoURl}
-                          alt={user.name}
-                          width={64}
-                          height={64}
-                          priority
-                          className={cn(
-                            currentUser === user._id
-                              ? 'h-full w-full  object-cover'
-                              : 'h-full w-full object-cover'
-                          )}
-                        />
-                      </div>
-                    </td>
-                    <td>{user.name}</td>
-                    <td>{user.email}</td>
-                    <td>{user.role}</td>
-                    <td>
-                      <div className='flex gap-5'>
-                        <button
-                          className={cn(
-                            currentUser === user._id
-                              ? 'text-2xl text-white/50'
-                              : 'text-2xl text-white/80'
-                          )}
-                          disabled={currentUser === user._id ? true : false}
-                          onClick={() => setIsModalOpen(true)}
-                        >
-                          <FaRegEdit />
-                        </button>
-                        <button
-                          className={cn(
-                            currentUser === user._id
-                              ? 'text-2xl text-red/50'
-                              : 'text-2xl text-red'
-                          )}
-                          disabled={currentUser === user._id ? true : false}
-                          onSubmit={() =>
-                            axios.delete(`/api/users/${user._id}`)
-                          }
-                        >
-                          <MdDelete className='text-black' />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                  {isModalOpen && (
-                    <div className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'>
-                      <Modal item={user} />
-                    </div>
-                  )}
-                </>
-              ))}
-            </tbody>
-          </table>
+      <div
+        className={cn(
+          'w-full rounded-xl bg-blue px-10 py-2 shadow-sm',
+          currentUser ? 'bg-red/50' : ''
+        )}
+      >
+        <div className='grid w-full grid-cols-12 items-center justify-center gap-5'>
+          <div
+            className={cn(
+              'col-span-1 h-16 w-16 overflow-hidden rounded-full border-2',
+              currentUser ? ' border-2 border-blue ' : ' border-white'
+            )}
+          >
+            <Image
+              src={user?.photoURl}
+              alt={user.name}
+              width={64}
+              height={64}
+              priority
+              className={cn(
+                currentUser
+                  ? 'h-full w-full  object-cover'
+                  : 'h-full w-full object-cover'
+              )}
+            />
+          </div>
+          <div className='col-span-10 grid grid-cols-3 items-center justify-between gap-5'>
+            <p>{user.name}</p>
+            <p>{user.email}</p>
+            <p>{user.role}</p>
+          </div>
+          <div className='flex  gap-5'>
+            <button
+              className={cn('text-2xl text-white/80')}
+              onClick={handleModal}
+            >
+              <FaRegEdit />
+            </button>
+            <button
+              className={cn(
+                currentUser ? 'text-2xl text-red/50' : 'text-2xl text-red'
+              )}
+              disabled={currentUser ? true : false}
+              onSubmit={() => axios.delete(`/api/users/${user._id}`)}
+            >
+              <MdDelete className='text-black' />
+            </button>
+          </div>
         </div>
       </div>
-      )
+      {/* OVERLay  */}
+      <div
+        onClick={handleOverlay}
+        className={`overlay fixed bottom-0 left-0 right-0 top-0 z-[1] h-screen w-screen bg-blue/20 blur-2xl ${
+          isOverlayOpen ? '' : 'hidden'
+        }`}
+      ></div>
+      {isModalOpen && (
+        <div>
+          <Modal
+            user={user}
+            isModalOpen={isModalOpen}
+            setIsModalOpen={setIsModalOpen}
+            token={token}
+            currentId={currentId}
+          />
+        </div>
+      )}
     </>
   );
 };
