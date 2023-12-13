@@ -11,7 +11,6 @@ interface ModalProps {
   isModalOpen: boolean | null;
   token: string | undefined;
   currentId: string | undefined;
-  setIsModalOpen: boolean;
 }
 
 interface UpdateFromDate {
@@ -26,7 +25,6 @@ const Modal: React.FC<ModalProps> = ({
   isModalOpen,
   token,
   currentId,
-  setIsModalOpen,
 }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 

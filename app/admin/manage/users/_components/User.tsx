@@ -94,7 +94,6 @@ const User: React.FC<UserProps> = ({ user, currentId, token, isLoading }) => {
           <Modal
             user={user}
             isModalOpen={isModalOpen}
-            setIsModalOpen={setIsModalOpen}
             token={token}
             currentId={currentId}
           />
