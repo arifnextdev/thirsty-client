@@ -6,8 +6,13 @@ import AllBeautyPackages from './_components/AllBeautyPackages';
 import SectionTitle from '@/app/components/ui/SectionTitle';
 import Button from '@/app/components/ui/Button';
 import Modal from '@/app/components/ui/Modal';
+import ProductModal from './_components/ProductModal';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
 
 const BeautyPackageMange = () => {
+  const session = useSelector((state: RootState) => state.auth?.userAndToken);
+  const token = session?.token;
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   return (
     <main>
@@ -24,12 +29,12 @@ const BeautyPackageMange = () => {
           </div>
         </div>
         <hr className='my-3 text-blue' />
-        <AllBeautyPackages />
+        <AllBeautyPackages token={token} />
       </div>
 
       {isModalOpen && (
         <div>
-          <div className=''>add Product</div>
+          <ProductModal isModalOpen={isModalOpen} token={token} />
         </div>
       )}
     </main>

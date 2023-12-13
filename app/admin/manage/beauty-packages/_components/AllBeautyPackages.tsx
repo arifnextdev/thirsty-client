@@ -5,9 +5,7 @@ import { beautyPackageType } from '@/types/beautyPackageItem';
 import { useSelector } from 'react-redux';
 import BeautyPackage from './Beauty-packages';
 
-const AllBeautyPackages = () => {
-  const session = useSelector((state: RootState) => state.auth?.userAndToken);
-  const token = session?.token;
+const AllBeautyPackages = ({ token }: { token: string | undefined }) => {
   const {
     data: beautyPackages,
     error,
