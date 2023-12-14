@@ -12,7 +12,7 @@ const AllBeautyPackages = ({ token }: { token: string | undefined }) => {
     isLoading,
   } = useFetch('/api/beauty_packages', token);
   return (
-    <div className=''>
+    <div className='flex flex-col gap-3'>
       {beautyPackages?.map((beautyPackage: beautyPackageType) => (
         <BeautyPackage
           key={beautyPackage._id}

@@ -4,8 +4,9 @@ import { axiosPackagePost } from '@/app/libs/beautyPackagePost';
 import { beautyPackageType } from '@/types/beautyPackageItem';
 import { bookingType } from '@/types/booking';
 import { speciallisType } from '@/types/specialists';
-import React from 'react';
+import { useState } from 'react';
 import toast from 'react-hot-toast';
+import { UploadDropzone } from '@/app/src/utils/uploadthing';
 
 interface ProductModalProps {
   isModalOpen: boolean | null;
@@ -13,6 +14,12 @@ interface ProductModalProps {
 }
 
 const ProductModal: React.FC<ProductModalProps> = ({ isModalOpen, token }) => {
+  const [images, setImages] = useState<
+    {
+      url: string;
+      key: string;
+    }[]
+  >([]);
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
 
@@ -28,9 +35,13 @@ const ProductModal: React.FC<ProductModalProps> = ({ isModalOpen, token }) => {
       title: target.title.value,
       description: target.description.value,
       category: target.category.value,
-      images: target.images.value,
+      images: images.map((image) => {
+        return image.url;
+      }),
       price: target.price.value,
     };
+
+    console.log(payload);
 
     try {
       const data: any = axiosPackagePost(
@@ -48,7 +59,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ isModalOpen, token }) => {
   };
   return (
     <div
-      className={` fixed left-1/2 top-1/3 z-[2] w-[35rem] -translate-x-1/2 -translate-y-1/2 rounded-xl border border-blue bg-white px-10 py-5 shadow-xl ${
+      className={` fixed left-1/2 top-1/2 z-[2] w-[35rem] -translate-x-1/2 -translate-y-1/2 rounded-xl border border-blue bg-white px-10 py-5 shadow-xl ${
         isModalOpen ? '' : 'hidden'
       }
        `}
@@ -89,7 +100,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ isModalOpen, token }) => {
             </div>
           </div>
           <div className='flex justify-between gap-5'>
-            <div className='flex flex-col items-start gap-1.5 '>
+            <div className='flex w-full flex-col items-start gap-1.5 '>
               <label htmlFor='name' className='cursor-pointer'>
                 Price
               </label>
@@ -101,20 +112,6 @@ const ProductModal: React.FC<ProductModalProps> = ({ isModalOpen, token }) => {
                 className='w-full rounded-xl border border-gray bg-transparent px-5 py-3 outline-none focus:border-blue '
               />
             </div>
-            <div className='flex flex-col items-start gap-1.5 '>
-              <label htmlFor='name' className='cursor-pointer'>
-                Images
-              </label>
-              <input
-                type='text'
-                id='images'
-                name='images'
-                placeholder='Images.....'
-                className='w-full rounded-xl border border-gray bg-transparent px-5 py-3 outline-none focus:border-blue '
-              />
-            </div>
-          </div>
-          <div className='flex justify-between gap-5'>
             <div className='flex w-full flex-col items-start gap-1.5 '>
               <label htmlFor='name' className='cursor-pointer'>
                 Category
@@ -133,6 +130,29 @@ const ProductModal: React.FC<ProductModalProps> = ({ isModalOpen, token }) => {
                 <option value={'Makeup Must-Haves'}>Makeup Must-Haves</option>
               </select>
             </div>
+          </div>
+          <div className='flex justify-between gap-5'>
+            <UploadDropzone
+              endpoint='imageUploader'
+              appearance={{
+                button: {
+                  background: 'blue',
+                  padding: '0.5rem o.75rem ',
+                  color: '#ffff',
+                  borderRadius: '0.75rem',
+                },
+              }}
+              onClientUploadComplete={(res: any) => {
+                if (res) {
+                  setImages(res);
+                }
+              }}
+              onUploadError={(error: Error) => {
+                // Do something with the error.
+                alert(`ERROR! ${error.message}`);
+              }}
+              className='imageuploader w-full'
+            />
             {/* <div className='flex w-full flex-col items-start gap-1.5 '>
               <label htmlFor='name' className='cursor-pointer'>
                 Phone....
@@ -150,7 +170,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ isModalOpen, token }) => {
             <Button variant={'primary'} type='submit' size={'full'}>
               Add Package
             </Button>
-            <Button variant={'danger'} type='submit' size={'full'}>
+            <Button variant={'danger'} size={'full'}>
               Cancel
             </Button>
           </div>
