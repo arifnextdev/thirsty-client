@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.7",
+    "@uploadthing/react": "^6.0.2",
     "axios": "^1.6.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
@@ -24,7 +25,8 @@
     "redux-persist": "^6.0.0",
     "swiper": "^11.0.3",
     "swr": "^2.2.4",
-    "tailwind-merge": "^2.0.0"
+    "tailwind-merge": "^2.0.0",
+    "uploadthing": "^6.1.0"
   },
   "devDependencies": {
     "@types/node": "^20",

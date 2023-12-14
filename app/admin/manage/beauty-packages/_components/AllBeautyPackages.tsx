@@ -14,7 +14,11 @@ const AllBeautyPackages = ({ token }: { token: string | undefined }) => {
   return (
     <div className=''>
       {beautyPackages?.map((beautyPackage: beautyPackageType) => (
-        <BeautyPackage beautyPackage={beautyPackage} token={token} />
+        <BeautyPackage
+          key={beautyPackage._id}
+          beautyPackage={beautyPackage}
+          token={token}
+        />
       ))}
     </div>
   );

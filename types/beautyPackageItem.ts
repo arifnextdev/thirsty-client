@@ -8,6 +8,6 @@ export type beautyPackageType = {
   category: string;
   images: string[];
   price: number;
-  speciallist: speciallisType;
-  bookings: bookingType;
+  speciallist: speciallisType[];
+  bookings: bookingType[];
 } & commonType;

@@ -5,7 +5,10 @@ import toast from 'react-hot-toast';
 
 export const axiosPackagePost = async (
   endPoint: string,
-  data: beautyPackageType,
+  data: Pick<
+    beautyPackageType,
+    'title' | 'description' | 'price' | 'images' | 'category'
+  >,
   token: string = ''
 ) => {
   try {

@@ -78,3 +78,12 @@ small {
 .userTableBody tr {
   @apply border-b border-t border-white/30;
 }
+.imageuploader {
+  @apply p-10;
+}
+.imageuploader svg {
+  @apply text-blue;
+}
+.imageuploader button {
+  @apply mt-5 rounded-xl bg-blue px-3 py-2 text-white;
+}

@@ -14,6 +14,17 @@ const BeautyPackageMange = () => {
   const session = useSelector((state: RootState) => state.auth?.userAndToken);
   const token = session?.token;
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isOverlayOpen, setIsOverlayOpen] = useState<boolean>(false);
+
+  const handleOverlay = () => {
+    setIsModalOpen(false);
+    setIsOverlayOpen(false);
+  };
+
+  const handleModal = () => {
+    setIsModalOpen(true);
+    setIsOverlayOpen(true);
+  };
   return (
     <main>
       <div className='sp container'>
@@ -23,7 +34,7 @@ const BeautyPackageMange = () => {
             <input type='text' placeholder='Search Package' />
           </div>
           <div className=''>
-            <Button variant={'secondary'} onClick={() => setIsModalOpen(true)}>
+            <Button variant={'secondary'} onClick={handleModal}>
               Add Package
             </Button>
           </div>
@@ -37,6 +48,14 @@ const BeautyPackageMange = () => {
           <ProductModal isModalOpen={isModalOpen} token={token} />
         </div>
       )}
+
+      {/* OVERLay  */}
+      <div
+        onClick={handleOverlay}
+        className={`overlay fixed bottom-0 left-0 right-0 top-0 z-[1] h-screen w-screen bg-blue/20 blur-2xl ${
+          isOverlayOpen ? '' : 'hidden'
+        }`}
+      ></div>
     </main>
   );
 };

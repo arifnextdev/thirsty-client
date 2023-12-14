@@ -13,14 +13,6 @@ import Link from 'next/link';
 import { cn } from '@/app/libs/utils';
 import { buttonVariants } from '@/app/components/ui/Button';
 
-const sliderContents = [
-  {
-    image: '',
-    heading: '',
-    subHeading: '',
-  },
-];
-
 const Slider = () => {
   return (
     <section className='h-[calc(100vh-5rem)] w-full'>

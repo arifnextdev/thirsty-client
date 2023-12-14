@@ -9,6 +9,8 @@ const BeautyPackage: React.FC<beautyPackagesProps> = ({
   beautyPackage,
   token,
 }) => {
+  console.log(beautyPackage);
+
   return (
     <section>
       <h1>{beautyPackage.title}</h1>

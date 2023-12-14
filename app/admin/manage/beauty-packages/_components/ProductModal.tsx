@@ -5,28 +5,23 @@ import { beautyPackageType } from '@/types/beautyPackageItem';
 import { bookingType } from '@/types/booking';
 import { speciallisType } from '@/types/specialists';
 import React from 'react';
+import toast from 'react-hot-toast';
 
 interface ProductModalProps {
-  beautyPacakage: beautyPackageType;
   isModalOpen: boolean | null;
   token: string | undefined;
 }
 
-const ProductModal: React.FC<ProductModalProps> = ({
-  beautyPacakage,
-  isModalOpen,
-  token,
-}) => {
+const ProductModal: React.FC<ProductModalProps> = ({ isModalOpen, token }) => {
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
+
     const target = e.target as typeof e.target & {
       title: { value: string };
       description: { value: string };
       category: { value: string };
       images: { value: string[] };
       price: { value: number };
-      speciallist: { value: speciallisType[] };
-      bookings: { value: bookingType[] };
     };
 
     const payload = {
@@ -34,10 +29,22 @@ const ProductModal: React.FC<ProductModalProps> = ({
       description: target.description.value,
       category: target.category.value,
       images: target.images.value,
-      speciallist: target.speciallist.value,
-      bookings: target.bookings.value,
+      price: target.price.value,
     };
-    axiosPackagePost('/api/beauty_packages', payload, token);
+
+    try {
+      const data: any = axiosPackagePost(
+        '/api/beauty_packages',
+        payload,
+        token
+      );
+
+      if (data) {
+        toast.success('SuccessFully Added');
+      }
+    } catch (error: any) {
+      toast.error(error.response?.data?.message);
+    }
   };
   return (
     <div
@@ -56,26 +63,26 @@ const ProductModal: React.FC<ProductModalProps> = ({
           <div className='flex justify-between gap-5'>
             <div className='flex flex-col items-start gap-1.5 '>
               <label htmlFor='name' className='cursor-pointer'>
-                Name
+                Title
               </label>
               <input
                 type='text'
-                id='name'
-                readOnly={true}
-                name='name'
-                placeholder='Name.....'
+                id='title'
+                required
+                name='title'
+                placeholder='Title.....'
                 className='w-full rounded-xl border border-gray bg-transparent px-5 py-3 outline-none focus:border-blue '
               />
             </div>
             <div className='flex flex-col items-start gap-1.5 '>
               <label htmlFor='name' className='cursor-pointer'>
-                Email Address
+                Drescription
               </label>
               <input
-                type='email'
-                readOnly={true}
-                id='email'
-                name='email'
+                type='text'
+                required
+                id='description'
+                name='description'
                 placeholder='Name.....'
                 className='w-full rounded-xl border border-gray bg-transparent px-5 py-3 outline-none focus:border-blue '
               />
@@ -84,52 +91,49 @@ const ProductModal: React.FC<ProductModalProps> = ({
           <div className='flex justify-between gap-5'>
             <div className='flex flex-col items-start gap-1.5 '>
               <label htmlFor='name' className='cursor-pointer'>
-                Photo Url
+                Price
               </label>
               <input
-                type='url'
-                id='photoURl'
-                name='photoURl'
-                placeholder='PhotoUrl.....'
+                type='number'
+                id='price'
+                name='price'
+                placeholder='Price.....'
                 className='w-full rounded-xl border border-gray bg-transparent px-5 py-3 outline-none focus:border-blue '
               />
             </div>
             <div className='flex flex-col items-start gap-1.5 '>
               <label htmlFor='name' className='cursor-pointer'>
-                Address
+                Images
               </label>
               <input
                 type='text'
-                id='address'
-                name='address'
-                placeholder='Name.....'
+                id='images'
+                name='images'
+                placeholder='Images.....'
                 className='w-full rounded-xl border border-gray bg-transparent px-5 py-3 outline-none focus:border-blue '
               />
             </div>
           </div>
           <div className='flex justify-between gap-5'>
-            {/* <div className='flex w-full flex-col items-start gap-1.5 '>
+            <div className='flex w-full flex-col items-start gap-1.5 '>
               <label htmlFor='name' className='cursor-pointer'>
-                Role
+                Category
               </label>
               <select
-                name='role'
-                id='role'
-                
+                name='category'
+                id='category'
                 className='w-full rounded-xl border border-gray bg-transparent px-5 py-3 outline-none focus:border-blue '
               >
-                <option
-                  value={user.role === 'user' ? 'user' : 'admin'}
-                  className=''
-                >
-                  {user.role === 'user' ? 'user' : 'admin'}
+                <option value={'Haircare Kit'} className=''>
+                  {'Haircare Kit'}
                 </option>
-                <option value={user.role === 'admin' ? 'user' : 'admin'}>
-                  {user.role === 'admin' ? 'user' : 'admin'}
+                <option value={'Skincare Essentials'}>
+                  Skincare Essentials
                 </option>
+                <option value={'Makeup Must-Haves'}>Makeup Must-Haves</option>
               </select>
-            </div> */}
-            <div className='flex w-full flex-col items-start gap-1.5 '>
+            </div>
+            {/* <div className='flex w-full flex-col items-start gap-1.5 '>
               <label htmlFor='name' className='cursor-pointer'>
                 Phone....
               </label>
@@ -140,11 +144,14 @@ const ProductModal: React.FC<ProductModalProps> = ({
                 placeholder='Phone.....'
                 className='w-full rounded-xl border border-gray bg-transparent px-5 py-3 outline-none focus:border-blue '
               />
-            </div>
+            </div> */}
           </div>
-          <div className=''>
+          <div className='flex gap-5'>
             <Button variant={'primary'} type='submit' size={'full'}>
               Add Package
+            </Button>
+            <Button variant={'danger'} type='submit' size={'full'}>
+              Cancel
             </Button>
           </div>
         </form>
