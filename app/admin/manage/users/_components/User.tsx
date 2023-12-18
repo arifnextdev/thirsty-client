@@ -34,7 +34,7 @@ const User: React.FC<UserProps> = ({ user, currentId, token, isLoading }) => {
     <>
       <div
         className={cn(
-          'w-full rounded-xl bg-blue px-10 py-2 shadow-sm',
+          'relative w-full rounded-xl bg-blue px-10 py-2 shadow-sm',
           currentUser ? 'bg-red/50' : ''
         )}
       >
@@ -85,12 +85,12 @@ const User: React.FC<UserProps> = ({ user, currentId, token, isLoading }) => {
       {/* OVERLay  */}
       <div
         onClick={handleOverlay}
-        className={`overlay fixed bottom-0 left-0 right-0 top-0 z-[1] h-screen w-screen bg-blue/20 blur-2xl ${
+        className={`overlay fixed bottom-0 left-0 right-0 top-0 z-[1] h-screen w-screen bg-blue/60 blur-2xl  ${
           isOverlayOpen ? '' : 'hidden'
         }`}
       ></div>
       {isModalOpen && (
-        <div>
+        <div className='eq absolute'>
           <Modal
             user={user}
             isModalOpen={isModalOpen}

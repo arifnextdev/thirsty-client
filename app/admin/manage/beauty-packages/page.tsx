@@ -9,7 +9,6 @@ import ProductModal from './_components/ProductModal';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
-
 const BeautyPackageMange = () => {
   const session = useSelector((state: RootState) => state.auth?.userAndToken);
   const token = session?.token;
@@ -27,7 +26,7 @@ const BeautyPackageMange = () => {
   };
   return (
     <main>
-      <div className='sp container'>
+      <div className='sp container relative'>
         <SectionTitle title='Beauty Package Manage' />
         <div className='flex justify-between'>
           <div className=''>
@@ -44,7 +43,7 @@ const BeautyPackageMange = () => {
       </div>
 
       {isModalOpen && (
-        <div>
+        <div className='absolute'>
           <ProductModal isModalOpen={isModalOpen} token={token} />
         </div>
       )}

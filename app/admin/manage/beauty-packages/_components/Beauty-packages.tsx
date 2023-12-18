@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { FaRegEdit } from 'react-icons/fa';
 import { MdDelete } from 'react-icons/md';
+import ProductUpdateModal from './ProductUpdateModal';
 
 interface beautyPackagesProps {
   beautyPackage: beautyPackageType;
@@ -30,7 +31,11 @@ const BeautyPackage: React.FC<beautyPackagesProps> = ({
 
   return (
     <>
-      <div className={cn('bg-primary w-full rounded-xl px-10 py-2 shadow-sm')}>
+      <div
+        className={cn(
+          'bg-primary relative w-full rounded-xl px-10 py-2 shadow-sm'
+        )}
+      >
         <div className='grid w-full grid-cols-12 items-center justify-center gap-5'>
           <div
             className={cn(
@@ -67,7 +72,15 @@ const BeautyPackage: React.FC<beautyPackagesProps> = ({
           </div>
         </div>
       </div>
-      {isModalOpen && <div>{<h1>beauty package</h1>}</div>}
+      {isModalOpen && (
+        <div className='absolute'>
+          <ProductUpdateModal
+            token={token}
+            beautyPackage={beautyPackage}
+            isModalOpen={isModalOpen}
+          />
+        </div>
+      )}
       {/* OVERLay  */}
       {isModalOpen && (
         <div
