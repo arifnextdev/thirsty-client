@@ -6,6 +6,8 @@ import { useState } from 'react';
 import { FaRegEdit } from 'react-icons/fa';
 import { MdDelete } from 'react-icons/md';
 import ProductUpdateModal from './ProductUpdateModal';
+import axios from 'axios';
+import toast from 'react-hot-toast';
 
 interface beautyPackagesProps {
   beautyPackage: beautyPackageType;
@@ -27,6 +29,27 @@ const BeautyPackage: React.FC<beautyPackagesProps> = ({
   const handleOverlay = () => {
     setIsOverlayOpen(false);
     setIsModalOpen(false);
+  };
+
+  const handleDelete = async (id: string) => {
+    console.log(token);
+
+    try {
+      const res = await axios.delete(
+        `${process.env.NEXT_PUBLIC_BASE_URL}${`/api/beauty_packages/${id}`}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (res.data) {
+        return res.data;
+      }
+    } catch (error: any) {
+      toast.error(error.response?.data?.message);
+    }
   };
 
   return (
@@ -65,7 +88,8 @@ const BeautyPackage: React.FC<beautyPackagesProps> = ({
             </button>
             <button
               className={cn('text-2xl text-red')}
-              // onSubmit={() => axios.delete(`/api/users/${user._id}`)}
+              type='submit'
+              onClick={() => handleDelete(beautyPackage._id)}
             >
               <MdDelete className='text-black' />
             </button>
