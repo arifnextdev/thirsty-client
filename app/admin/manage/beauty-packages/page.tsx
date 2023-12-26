@@ -15,14 +15,9 @@ const BeautyPackageMange = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isOverlayOpen, setIsOverlayOpen] = useState<boolean>(false);
 
-  const handleOverlay = () => {
-    setIsModalOpen(false);
-    setIsOverlayOpen(false);
-  };
-
-  const handleModal = () => {
-    setIsModalOpen(true);
-    setIsOverlayOpen(true);
+  const modalToggle = (data: boolean) => {
+    setIsModalOpen(data);
+    setIsOverlayOpen(data);
   };
   return (
     <main>
@@ -33,7 +28,7 @@ const BeautyPackageMange = () => {
             <input type='text' placeholder='Search Package' />
           </div>
           <div className=''>
-            <Button variant={'secondary'} onClick={handleModal}>
+            <Button variant={'secondary'} onClick={() => modalToggle(true)}>
               Add Package
             </Button>
           </div>
@@ -44,13 +39,17 @@ const BeautyPackageMange = () => {
 
       {isModalOpen && (
         <div className='absolute'>
-          <ProductModal isModalOpen={isModalOpen} token={token} />
+          <ProductModal
+            isModalOpen={isModalOpen}
+            token={token}
+            modalToggle={modalToggle}
+          />
         </div>
       )}
 
       {/* OVERLay  */}
       <div
-        onClick={handleOverlay}
+        onClick={() => modalToggle(false)}
         className={`overlay fixed bottom-0 left-0 right-0 top-0 z-[1] h-screen w-screen bg-blue/20 blur-2xl ${
           isOverlayOpen ? '' : 'hidden'
         }`}

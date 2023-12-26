@@ -10,12 +10,14 @@ interface ProductUpdateModalProps {
   beautyPackage: beautyPackageType;
   isModalOpen: boolean | null;
   token: string | undefined;
+  modalToggle: (data: boolean) => void;
 }
 
 const ProductUpdateModal: React.FC<ProductUpdateModalProps> = ({
   beautyPackage,
   isModalOpen,
   token,
+  modalToggle,
 }) => {
   const [images, setImages] = useState<
     {
@@ -190,7 +192,11 @@ const ProductUpdateModal: React.FC<ProductUpdateModalProps> = ({
               <Button variant={'primary'} type='submit' size={'full'}>
                 Add Package
               </Button>
-              <Button variant={'danger'} size={'full'}>
+              <Button
+                variant={'danger'}
+                size={'full'}
+                onClick={() => modalToggle(false)}
+              >
                 Cancel
               </Button>
             </div>

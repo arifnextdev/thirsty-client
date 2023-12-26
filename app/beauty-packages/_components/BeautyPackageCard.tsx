@@ -9,7 +9,6 @@ interface BeautyPackageCardProps {
 }
 
 const BeautyPackageCard: React.FC<BeautyPackageCardProps> = ({ item }) => {
-  console.log(item);
   return (
     <div className='w-full space-y-5 rounded-2xl bg-white p-5 shadow-md shadow-gray'>
       <Link

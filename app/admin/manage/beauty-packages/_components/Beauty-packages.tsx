@@ -21,24 +21,18 @@ const BeautyPackage: React.FC<beautyPackagesProps> = ({
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isOverlayOpen, setIsOverlayOpen] = useState<boolean>(false);
 
-  const handleModal = () => {
-    setIsModalOpen(true);
-    setIsOverlayOpen(true);
-  };
-
-  const handleOverlay = () => {
-    setIsOverlayOpen(false);
-    setIsModalOpen(false);
+  const modalToggle = (modal: boolean) => {
+    setIsModalOpen(modal);
+    setIsOverlayOpen(modal);
   };
 
   const handleDelete = async (id: string) => {
-    console.log(token);
-
     try {
       const res = await axios.delete(
-        `${process.env.NEXT_PUBLIC_BASE_URL}${`/api/beauty_packages/${id}`}`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/beauty_packages/${id}`,
         {
           headers: {
+            method: 'DELETE',
             Authorization: `Bearer ${token}`,
           },
         }
@@ -82,13 +76,12 @@ const BeautyPackage: React.FC<beautyPackagesProps> = ({
           <div className='flex  gap-5'>
             <button
               className={cn('text-2xl text-blue/80')}
-              onClick={handleModal}
+              onClick={() => modalToggle(true)}
             >
               <FaRegEdit />
             </button>
             <button
               className={cn('text-2xl text-red')}
-              type='submit'
               onClick={() => handleDelete(beautyPackage._id)}
             >
               <MdDelete className='text-black' />
@@ -102,13 +95,14 @@ const BeautyPackage: React.FC<beautyPackagesProps> = ({
             token={token}
             beautyPackage={beautyPackage}
             isModalOpen={isModalOpen}
+            modalToggle={modalToggle}
           />
         </div>
       )}
       {/* OVERLay  */}
       {isModalOpen && (
         <div
-          onClick={handleOverlay}
+          onClick={() => modalToggle(false)}
           className={`overlay fixed bottom-0 left-0 right-0 top-0 z-[1] h-screen w-screen bg-blue/20 blur-2xl ${
             isOverlayOpen ? '' : 'hidden'
           }`}

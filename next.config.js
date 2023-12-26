@@ -6,6 +6,7 @@ const nextConfig = {
       'images.unsplash.com',
       'res.cloudinary.com',
       'utfs.io',
+      'i.ibb.co',
     ],
   },
 };
