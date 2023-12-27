@@ -1,7 +1,7 @@
 import Button from '@/app/components/ui/Button';
-import { axiosPackagePost } from '@/app/libs/beautyPackagePost';
 import { UploadDropzone } from '@/app/src/utils/uploadthing';
 import { beautyPackageType } from '@/types/beautyPackageItem';
+import axios from 'axios';
 import Image from 'next/image';
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
@@ -11,6 +11,7 @@ interface ProductUpdateModalProps {
   isModalOpen: boolean | null;
   token: string | undefined;
   modalToggle: (data: boolean) => void;
+  getData: () => void;
 }
 
 const ProductUpdateModal: React.FC<ProductUpdateModalProps> = ({
@@ -18,6 +19,7 @@ const ProductUpdateModal: React.FC<ProductUpdateModalProps> = ({
   isModalOpen,
   token,
   modalToggle,
+  getData,
 }) => {
   const [images, setImages] = useState<
     {
@@ -33,7 +35,7 @@ const ProductUpdateModal: React.FC<ProductUpdateModalProps> = ({
       title: { value: string };
       description: { value: string };
       category: { value: string };
-      images: { value: string[] };
+      images: { value: string };
       price: { value: number };
     };
 
@@ -41,25 +43,28 @@ const ProductUpdateModal: React.FC<ProductUpdateModalProps> = ({
       title: target.title.value,
       description: target.description.value,
       category: target.category.value,
-      images: images.map((image) => {
-        return image.url;
-      }),
+      images: target.images.value,
       price: target.price.value,
     };
 
     console.log(payload);
 
     try {
-      const data: any = axiosPackagePost(
-        '/api/beauty_packages',
+      const res = await axios.put(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/beauty_packages/${beautyPackage._id}`,
         payload,
-        token
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
-      if (data) {
-        console.log(data);
-
-        toast.success('SuccessFully Added');
+      if (res.data) {
+        getData();
+        toast.success('Package updated');
+        modalToggle(false);
+        return res.data;
       }
     } catch (error: any) {
       toast.error(error.response?.data?.message);
@@ -142,19 +147,21 @@ const ProductUpdateModal: React.FC<ProductUpdateModalProps> = ({
                 </select>
               </div>
             </div>
-            <div className='flex h-[100px] w-[100px] gap-5 overflow-hidden'>
-              {beautyPackage?.images.map((image: any, i: number) => (
-                <Image
-                  key={i}
-                  alt={'image'}
-                  src={image}
-                  width={200}
-                  height={200}
-                />
-              ))}
-            </div>
+
             <div className='flex justify-between gap-5'>
-              <UploadDropzone
+              <div className='flex w-full flex-col items-start gap-1.5 '>
+                <label htmlFor='name' className='cursor-pointer'>
+                  Images
+                </label>
+                <input
+                  type='text'
+                  id='images'
+                  name='images'
+                  placeholder='Images Link.....'
+                  className='w-full rounded-xl border border-gray bg-transparent px-5 py-3 outline-none focus:border-blue '
+                />
+              </div>
+              {/* <UploadDropzone
                 endpoint='imageUploader'
                 appearance={{
                   button: {
@@ -174,23 +181,23 @@ const ProductUpdateModal: React.FC<ProductUpdateModalProps> = ({
                   alert(`ERROR! ${error.message}`);
                 }}
                 className='imageuploader w-full'
-              />
-              {/* <div className='flex w-full flex-col items-start gap-1.5 '>
-              <label htmlFor='name' className='cursor-pointer'>
-                Phone....
-              </label>
-              <input
-                type='phone'
-                id='phone'
-                name='phoneNumber'
-                placeholder='Phone.....'
-                className='w-full rounded-xl border border-gray bg-transparent px-5 py-3 outline-none focus:border-blue '
-              />
-            </div> */}
+              /> */}
+            </div>
+            <div className='flex h-[100px] w-[100px] gap-5 overflow-hidden'>
+              {beautyPackage?.images.map((image: any, i: number) => (
+                <Image
+                  key={i}
+                  alt={'image'}
+                  src={image}
+                  width={200}
+                  height={200}
+                  priority
+                />
+              ))}
             </div>
             <div className='flex gap-5'>
               <Button variant={'primary'} type='submit' size={'full'}>
-                Add Package
+                Update Package
               </Button>
               <Button
                 variant={'danger'}

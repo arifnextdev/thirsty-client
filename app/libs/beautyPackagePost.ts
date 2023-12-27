@@ -9,7 +9,9 @@ export const axiosPackagePost = async (
     beautyPackageType,
     'title' | 'description' | 'price' | 'images' | 'category'
   >,
-  token: string = ''
+  token: string = '',
+  getData: () => void,
+  modalToggle: (data: boolean) => void
 ) => {
   try {
     const res = await axios.post(
@@ -23,6 +25,9 @@ export const axiosPackagePost = async (
     );
 
     if (res.data) {
+      getData();
+      modalToggle(false);
+      toast.success('Package Added');
       return res.data;
     }
   } catch (error: any) {

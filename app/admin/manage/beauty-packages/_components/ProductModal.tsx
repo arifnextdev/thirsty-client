@@ -5,17 +5,20 @@ import { ReactNode, useState } from 'react';
 import toast from 'react-hot-toast';
 import Image from 'next/image';
 import { cn } from '@/app/libs/utils';
+import { beautyPackageType } from '@/types/beautyPackageItem';
 
 interface ProductModalProps {
   isModalOpen: boolean | null;
   token: string | undefined;
   modalToggle: (data: boolean) => void;
+  getData: () => void;
 }
 
 const ProductModal: React.FC<ProductModalProps> = ({
   isModalOpen,
   token,
   modalToggle,
+  getData,
 }) => {
   const [images, setImages] = useState<
     {
@@ -55,27 +58,22 @@ const ProductModal: React.FC<ProductModalProps> = ({
       images: { value: string[] };
       price: { value: number };
     };
-
     const payload = {
       title: target.title.value,
       description: target.description.value,
       category: target.category.value,
-      images: base64Images,
+      images: target.images.value,
       price: target.price.value,
     };
 
-    console.log(payload);
-
     try {
-      const data: any = axiosPackagePost(
+      const data = axiosPackagePost(
         '/api/beauty_packages',
         payload,
-        token
+        token,
+        getData,
+        modalToggle
       );
-
-      if (data) {
-        toast.success('SuccessFully Added');
-      }
     } catch (error: any) {
       toast.error(error.response?.data?.message);
     }
@@ -154,7 +152,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
               </select>
             </div>
           </div>
-          <div className='flex w-full justify-between gap-5'>
+          {/* <div className='flex w-full justify-between gap-5'>
             <div className='grid w-full grid-cols-4 justify-between gap-2.5 overflow-hidden'>
               {base64Images.map((base64, index) => (
                 <div key={index} className='h-[100px] w-[100px]'>
@@ -169,9 +167,9 @@ const ProductModal: React.FC<ProductModalProps> = ({
                 </div>
               ))}
             </div>
-          </div>
+          </div> */}
           <div className='flex justify-between gap-5'>
-            <div className='flex w-full items-center justify-center'>
+            {/* <div className='flex w-full items-center justify-center'>
               <label
                 htmlFor='dropzone-file'
                 className='border-gray-300 bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600 flex h-32 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed'
@@ -208,6 +206,18 @@ const ProductModal: React.FC<ProductModalProps> = ({
                   onChange={handleFileChange}
                 />
               </label>
+            </div> */}
+            <div className='flex w-full flex-col items-start gap-1.5 '>
+              <label htmlFor='name' className='cursor-pointer'>
+                Images
+              </label>
+              <input
+                type='text'
+                id='images'
+                name='images'
+                placeholder='Images Link.....'
+                className='w-full rounded-xl border border-gray bg-transparent px-5 py-3 outline-none focus:border-blue '
+              />
             </div>
           </div>
 

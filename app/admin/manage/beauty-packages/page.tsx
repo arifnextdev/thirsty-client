@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import AllBeautyPackages from './_components/AllBeautyPackages';
 import SectionTitle from '@/app/components/ui/SectionTitle';
@@ -8,12 +8,36 @@ import Modal from '@/app/components/ui/Modal';
 import ProductModal from './_components/ProductModal';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
+import axios from 'axios';
+import { beautyPackageType } from '@/types/beautyPackageItem';
 
 const BeautyPackageMange = () => {
   const session = useSelector((state: RootState) => state.auth?.userAndToken);
   const token = session?.token;
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isOverlayOpen, setIsOverlayOpen] = useState<boolean>(false);
+  const [packages, setPackages] = useState<beautyPackageType[]>([]);
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const getData = async () => {
+    try {
+      const res = await axios.get(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/beauty_packages`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (res.data) {
+        setPackages(res.data);
+      }
+    } catch (error) {}
+  };
 
   const modalToggle = (data: boolean) => {
     setIsModalOpen(data);
@@ -34,7 +58,11 @@ const BeautyPackageMange = () => {
           </div>
         </div>
         <hr className='my-3 text-blue' />
-        <AllBeautyPackages token={token} />
+        <AllBeautyPackages
+          token={token}
+          packages={packages}
+          getData={getData}
+        />
       </div>
 
       {isModalOpen && (
@@ -43,6 +71,7 @@ const BeautyPackageMange = () => {
             isModalOpen={isModalOpen}
             token={token}
             modalToggle={modalToggle}
+            getData={getData}
           />
         </div>
       )}

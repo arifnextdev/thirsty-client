@@ -12,11 +12,13 @@ import toast from 'react-hot-toast';
 interface beautyPackagesProps {
   beautyPackage: beautyPackageType;
   token: string | undefined;
+  getData: () => void;
 }
 
 const BeautyPackage: React.FC<beautyPackagesProps> = ({
   beautyPackage,
   token,
+  getData,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isOverlayOpen, setIsOverlayOpen] = useState<boolean>(false);
@@ -39,6 +41,8 @@ const BeautyPackage: React.FC<beautyPackagesProps> = ({
       );
 
       if (res.data) {
+        getData();
+        toast.success('Package Deleted');
         return res.data;
       }
     } catch (error: any) {
@@ -96,6 +100,7 @@ const BeautyPackage: React.FC<beautyPackagesProps> = ({
             beautyPackage={beautyPackage}
             isModalOpen={isModalOpen}
             modalToggle={modalToggle}
+            getData={getData}
           />
         </div>
       )}

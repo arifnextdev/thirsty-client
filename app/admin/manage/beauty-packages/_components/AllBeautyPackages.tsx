@@ -4,20 +4,28 @@ import { RootState } from '@/redux/store';
 import { beautyPackageType } from '@/types/beautyPackageItem';
 import { useSelector } from 'react-redux';
 import BeautyPackage from './Beauty-packages';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 
-const AllBeautyPackages = ({ token }: { token: string | undefined }) => {
-  const {
-    data: beautyPackages,
-    error,
-    isLoading,
-  } = useFetch('/api/beauty_packages', token);
+const AllBeautyPackages = ({
+  token,
+  packages,
+  getData,
+}: {
+  token: string | undefined;
+  packages: beautyPackageType[];
+  getData: () => void;
+}) => {
+  console.log(packages);
+
   return (
     <div className='flex flex-col gap-3'>
-      {beautyPackages?.map((beautyPackage: beautyPackageType) => (
+      {packages?.map((beautyPackage: beautyPackageType) => (
         <BeautyPackage
           key={beautyPackage._id}
           beautyPackage={beautyPackage}
           token={token}
+          getData={getData}
         />
       ))}
     </div>
