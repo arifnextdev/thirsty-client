@@ -7,6 +7,7 @@ const nextConfig = {
       'res.cloudinary.com',
       'utfs.io',
       'i.ibb.co',
+      'www.pexels.com',
     ],
   },
 };
