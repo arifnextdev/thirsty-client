@@ -4,26 +4,40 @@ import React from 'react';
 const Pagination = ({
   currentPage,
   totalPage,
+  getData,
 }: {
   currentPage: number;
   totalPage: number;
+  getData: () => void;
 }) => {
   return (
     <div className='sp text-center'>
       <div className='flex justify-center gap-10'>
-        <Link href={currentPage === 1 ? '' : `/?page=${currentPage - 1}`}>
-          previos page
+        <Link
+          onClick={() => getData()}
+          href={
+            currentPage === 1
+              ? ''
+              : `/admin/manage/beauty-packages?page=${currentPage - 1}`
+          }
+        >
+          Previous page
         </Link>
         {[...Array(totalPage)].map((_ele, ind) => (
-          <button className='' key={ind}>
-            {ind + 1}
-          </button>
+          <Link
+            href={`/admin/manage/beauty-packages?page=${ind + 1}`}
+            key={ind}
+          >
+            <button className=''>{ind + 1}</button>
+          </Link>
         ))}
-        <button className='flex h-10 w-10 items-center justify-center rounded-full bg-blue p-3 text-lg text-white'>
-          1
-        </button>
         <Link
-          href={currentPage === totalPage ? '' : `/?page=${currentPage + 1}`}
+          onClick={() => getData()}
+          href={
+            currentPage === totalPage
+              ? ''
+              : `/admin/manage/beauty-packages?page=${currentPage + 1}`
+          }
         >
           Next page
         </Link>

@@ -10,6 +10,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import axios from 'axios';
 import { beautyPackageType } from '@/types/beautyPackageItem';
+import Pagination from '@/app/components/Pagination';
 
 const BeautyPackageMange = () => {
   const session = useSelector((state: RootState) => state.auth?.userAndToken);
@@ -17,10 +18,7 @@ const BeautyPackageMange = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isOverlayOpen, setIsOverlayOpen] = useState<boolean>(false);
   const [packages, setPackages] = useState<beautyPackageType[]>([]);
-
-  useEffect(() => {
-    getData();
-  }, []);
+  const [page, setPage] = useState(1);
 
   const getData = async () => {
     try {
@@ -29,6 +27,10 @@ const BeautyPackageMange = () => {
         {
           headers: {
             Authorization: `Bearer ${token}`,
+          },
+          params: {
+            page,
+            pageSize: 3, // Set your desired page size
           },
         }
       );
@@ -39,10 +41,25 @@ const BeautyPackageMange = () => {
     } catch (error) {}
   };
 
+  const totalPackage = packages?.length + 1;
+  const totalPage = Math.ceil(totalPackage / 3);
+
   const modalToggle = (data: boolean) => {
     setIsModalOpen(data);
     setIsOverlayOpen(data);
   };
+
+  const handleNextPage = () => {
+    setPage((prevPage) => prevPage + 1);
+  };
+
+  const handlePrevPage = () => {
+    setPage((prevPage) => Math.max(prevPage - 1, 1)); // Ensure page is not less than 1
+  };
+
+  useEffect(() => {
+    getData();
+  }, [page]);
   return (
     <main>
       <div className='sp container relative'>
@@ -64,6 +81,16 @@ const BeautyPackageMange = () => {
           getData={getData}
         />
       </div>
+
+      <div>
+        {/* Render your beauty packages here */}
+        {/* Add UI elements for pagination (e.g., Next and Previous buttons) */}
+        <button onClick={handlePrevPage}>Previous</button>
+        <span> Page {page} </span>
+        <button onClick={handleNextPage}>Next</button>
+      </div>
+
+      <Pagination currentPage={page} totalPage={totalPage} getData={getData} />
 
       {isModalOpen && (
         <div className='absolute'>
