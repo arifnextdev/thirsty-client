@@ -110,8 +110,6 @@ const BeautyPackageMange = () => {
         </button>
       </div>
 
-      {/* <Pagination currentPage={page} totalPage={totalPage} getData={getData} /> */}
-
       {isModalOpen && (
         <div className='absolute'>
           <ProductModal

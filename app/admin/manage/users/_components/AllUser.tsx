@@ -5,7 +5,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import User from './User';
 import { userType } from '@/types/user';
-import Pagination from '@/app/components/Pagination';
+
 import { useSearchParams } from 'next/navigation';
 
 const AllUser = () => {
@@ -28,7 +28,6 @@ const AllUser = () => {
             />
           ))}
       </div>
-      <Pagination />
     </section>
   );
 };
