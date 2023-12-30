@@ -10,7 +10,8 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import axios from 'axios';
 import { beautyPackageType } from '@/types/beautyPackageItem';
-import Pagination from '@/app/components/Pagination';
+import { GrLinkPrevious } from 'react-icons/gr';
+import { GrLinkNext } from 'react-icons/gr';
 
 const BeautyPackageMange = () => {
   const session = useSelector((state: RootState) => state.auth?.userAndToken);
@@ -18,6 +19,7 @@ const BeautyPackageMange = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isOverlayOpen, setIsOverlayOpen] = useState<boolean>(false);
   const [packages, setPackages] = useState<beautyPackageType[]>([]);
+  const [searchTerm, setSearchTerm] = useState('');
   const [page, setPage] = useState(1);
 
   const getData = async () => {
@@ -30,7 +32,8 @@ const BeautyPackageMange = () => {
           },
           params: {
             page,
-            pageSize: 3, // Set your desired page size
+            pageSize: 5,
+            search: searchTerm,
           },
         }
       );
@@ -57,6 +60,11 @@ const BeautyPackageMange = () => {
     setPage((prevPage) => Math.max(prevPage - 1, 1)); // Ensure page is not less than 1
   };
 
+  const handleChange = (e: any) => {
+    setSearchTerm(e.target.value);
+    getData();
+  };
+
   useEffect(() => {
     getData();
   }, [page]);
@@ -65,8 +73,16 @@ const BeautyPackageMange = () => {
       <div className='sp container relative'>
         <SectionTitle title='Beauty Package Manage' />
         <div className='flex justify-between'>
-          <div className=''>
-            <input type='text' placeholder='Search Package' />
+          <div className='flex gap-5'>
+            <input
+              type='text'
+              placeholder='Search Package'
+              onChange={handleChange}
+              className='w-full rounded-xl border border-gray bg-transparent px-5 py-3 outline-none focus:border-blue'
+            />
+            <Button variant={'primary'} onClick={() => getData()}>
+              search
+            </Button>
           </div>
           <div className=''>
             <Button variant={'secondary'} onClick={() => modalToggle(true)}>
@@ -82,15 +98,19 @@ const BeautyPackageMange = () => {
         />
       </div>
 
-      <div>
-        {/* Render your beauty packages here */}
-        {/* Add UI elements for pagination (e.g., Next and Previous buttons) */}
-        <button onClick={handlePrevPage}>Previous</button>
-        <span> Page {page} </span>
-        <button onClick={handleNextPage}>Next</button>
+      <div className='flex w-full justify-center gap-10'>
+        <button onClick={handlePrevPage} className='text-2xl text-blue'>
+          <GrLinkPrevious />
+        </button>
+        <span className='flex h-10 w-10 items-center justify-center rounded-full bg-blue text-2xl text-white'>
+          {page}{' '}
+        </span>
+        <button onClick={handleNextPage} className='text-2xl text-blue'>
+          <GrLinkNext />
+        </button>
       </div>
 
-      <Pagination currentPage={page} totalPage={totalPage} getData={getData} />
+      {/* <Pagination currentPage={page} totalPage={totalPage} getData={getData} /> */}
 
       {isModalOpen && (
         <div className='absolute'>
