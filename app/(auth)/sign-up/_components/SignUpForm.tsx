@@ -71,7 +71,7 @@ const SignUpForm = () => {
       >
         <div className='flex flex-col items-start gap-1.5 '>
           <label htmlFor='name' className='cursor-pointer'>
-            Email Address
+            Name
           </label>
           <input
             value={formData.name}

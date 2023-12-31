@@ -6,8 +6,6 @@ import { useSelector } from 'react-redux';
 import User from './User';
 import { userType } from '@/types/user';
 
-import { useSearchParams } from 'next/navigation';
-
 const AllUser = () => {
   const session = useSelector((state: RootState) => state.auth?.userAndToken);
   const token = session?.token;

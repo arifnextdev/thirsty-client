@@ -1,6 +1,6 @@
 export type commonType = {
   _id: string;
-  createAt: Date;
+  createdAt: Date;
   updatedAt: Date;
   __v: string;
 };
