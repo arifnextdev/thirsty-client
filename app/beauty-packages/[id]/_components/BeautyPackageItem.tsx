@@ -12,7 +12,7 @@ const BeautyPackageItem: React.FC<BeautyPackageItemProps> = ({ item }) => {
     <section className='sp container'>
       <div className='grid grid-cols-12 gap-10'>
         <div className='col-span-5'>
-          <LeftSide images={item.images} />
+          {/* <LeftSide images={item.images} /> */}
         </div>
         <div className='col-span-7 '>
           <RightSide beautyPackage={item} />

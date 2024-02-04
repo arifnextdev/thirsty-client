@@ -2,7 +2,6 @@
 import Button from '@/app/components/ui/Button';
 import SectionTitle from '@/app/components/ui/SectionTitle';
 import { RootState } from '@/redux/store';
-import { beautyPackageType } from '@/types/beautyPackageItem';
 import { speciallisType } from '@/types/specialists';
 import axios from 'axios';
 import { useEffect, useState } from 'react';

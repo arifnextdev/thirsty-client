@@ -15,6 +15,8 @@ const BeautyPackageDetalsPage = ({ params }: { params: { id: string } }) => {
     error,
   } = useFetch(`/api/beauty_packages/${params.id}`);
 
+  console.log('hello package');
+
   const router = useRouter();
   return (
     <main>

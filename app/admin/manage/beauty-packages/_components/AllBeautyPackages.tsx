@@ -1,11 +1,6 @@
 'use client';
-import useFetch from '@/hooks/useFetch';
-import { RootState } from '@/redux/store';
 import { beautyPackageType } from '@/types/beautyPackageItem';
-import { useSelector } from 'react-redux';
 import BeautyPackage from './Beauty-packages';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
 
 const AllBeautyPackages = ({
   token,

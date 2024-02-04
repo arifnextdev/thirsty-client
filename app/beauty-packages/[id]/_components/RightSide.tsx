@@ -13,12 +13,14 @@ interface RightSideProps {
 const RightSide: React.FC<RightSideProps> = ({ beautyPackage }) => {
   const session = useSelector((state: RootState) => state.auth?.userAndToken);
   const token = session?.token;
-  console.log(beautyPackage);
+  console.log(token);
 
-  const handleBooking = async () => {
+  const handleBooking = async (e: React.SyntheticEvent) => {
+    e.preventDefault();
     try {
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_BASE_URL}/api/bookings/create/${beautyPackage._id}`,
+        {},
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -40,8 +42,8 @@ const RightSide: React.FC<RightSideProps> = ({ beautyPackage }) => {
       <h3 className='text-6xl text-blue'>{beautyPackage.title}</h3>
       <p className='w-[75%] text-2xl'>{beautyPackage.description}</p>
       <div className=''>
-        {beautyPackage?.speciallist.map((item) => (
-          <div className='' key={item._id}>
+        {beautyPackage?.speciallist.map((item, i) => (
+          <div className='' key={i}>
             <h5>{item.name}</h5>
           </div>
         ))}
@@ -66,9 +68,11 @@ const RightSide: React.FC<RightSideProps> = ({ beautyPackage }) => {
       <p className='text-5xl font-semibold text-blue '>
         ${beautyPackage.price}
       </p>
-      <Button size={'auto'} className='cursor-pointer' onClick={handleBooking}>
-        Booking Now
-      </Button>
+      <form onSubmit={handleBooking}>
+        <Button type='submit' size={'auto'} className='cursor-pointer'>
+          Booking Now
+        </Button>
+      </form>
     </div>
   );
 };
